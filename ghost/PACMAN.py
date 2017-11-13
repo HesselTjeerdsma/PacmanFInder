@@ -3,6 +3,34 @@ import sys, os
 import time
 import _thread
 
+from LCD import *
+
+from VIBRATOR import *
+
+from PACMAN_ALG import *
+
+NEOPIXEL = True
+
+try:
+	from neopixel import *
+	from LEDRING import *
+except ImportError:
+    print("No Neopixel library")
+    NEOPIXEL = False
+    time.sleep(2)
+    import math
+    def Color(a,b,c):
+        return ([a,b,c])
+    def LED_setup():
+        return
+    def LED_show(a,b):
+        return True
+    def LED_degreeToLed(degree):
+        degree = degree % 360
+        led =  math.floor(((degree*1000)/360000)*16)
+        return led
+
+
 ENERGIZER_TIME = 10
 QUARANTINE_TIME = 10
 
@@ -59,6 +87,9 @@ class PACMAN(object):
 	def set_name(self,name):
 		self.name = name;
 		return
+	
+	def set_Web(self,web):
+		self.Web = web
 	
 	def loadRegistration(self,response):
 		try:
@@ -256,7 +287,23 @@ class PACMAN(object):
 				#Yourself
 				self.energized = False
 		elif(type == "quarantine"):
-			time.sleep(timer_time)
+			if NEOPIXEL:
+				for v in range(timer_time):
+					print("_")
+					GPIO.output(GPIO_VIB, 1)
+					for x in range(1,16,2):
+						self.RingColor[x] =  Color(30,0,0)
+						self.RingColor[x-1] =Color(0,0,0)
+					LED_show(self.Ring,self.RingColor)
+					time.sleep(0.25)
+					GPIO.output(GPIO_VIB, 0)
+					for y in range(0,16,2):
+						self.RingColor[y] =  Color(30,0,0)
+						self.RingColor[y+1] =Color(0,0,0)
+					LED_show(self.Ring,self.RingColor)
+					time.sleep(0.25)
+			else:
+				time.sleep(timer_time)
 			self.quarantine = False
 	
 	def remove_Point(self,type,x,y):
@@ -303,13 +350,69 @@ class PACMAN(object):
 				self.y = xyz['y']
 			#print("Magnetic angle: "+str(self.magnetic['A']))
 			#print("Pozyx location X:"+str(xyz['x'])+"\tY:"+str(xyz['y']))
+	
+	def ledringClear(self):
+		for i in range(len(self.RingColor)):
+			self.RingColor[i] = Color(0,0,0)
 
+	def ledring(self):
+		#LEDRING.clear(self.Ring)
+		self.ledringClear()
+		players = 0
+		food = 0
+		energizer = 0
+		
+		if not self.energized:
+			for value in self.food:
+				if(food < 2 and value['distance'] < 5000):
+					self.RingColor[LED_degreeToLed(self.magnetic['A']-value['angle'])] = Color(10,10,0)
+					food += 1
+				else:
+					break
+					
+			for value in self.energizer:
+				if(energizer < 2 and value['distance'] < 5000):
+					self.RingColor[LED_degreeToLed(self.magnetic['A']-value['angle'])] = Color(0,0,10)
+					energizer += 1
+				else:
+					break
+			
+			for value in self.cherry:
+				self.RingColor[LED_degreeToLed(self.magnetic['A']-value['angle'])] = Color(10,0,10)
+		else:
+			print("ENERGIZED")
+			print(self.energized)
+			for i in range(0,16):
+				self.RingColor[i] = Color(5,5,5)
+		
+		
+		for key, value in self.PlayerData.items():
+			if(value['status'] == "Playing" and players < 2 and value['distance'] < 5000):
+				if(self.type == "pacman" and value['type'] != "pacman"):
+					if(self.energized):
+						self.RingColor[LED_degreeToLed(self.magnetic['A']-value['angle'])] = Color(0,10,0)
+					else:
+						self.RingColor[LED_degreeToLed(self.magnetic['A']-value['angle'])] = Color(10,0,0)
+					players += 1
+				elif(self.type == "ghost" and value['type'] != "ghost"):
+					if(value['energized']):
+						self.RingColor[LED_degreeToLed(self.magnetic['A']-value['angle'])] = Color(10,0,0)
+					else:
+						self.RingColor[LED_degreeToLed(self.magnetic['A']-value['angle'])] = Color(0,10,0)
+					players += 1
+				elif(players == 2):
+					break
+					
+		LED_show(self.Ring,self.RingColor)
+	
 	def run(self):
 		try:
 			while True:
 				if(self.newLocation):
 					run_Algorithm(self)
 				
+				if not (self.quarantine):
+					self.ledring()
 				if(self.A == 0):
 					os.system('clear')
 					print("Game is running")
@@ -439,3 +542,31 @@ class PACMAN(object):
 	def printPosition(self):
 		print("X:{0}\tY:{1}".format(self.x,self.y))
 
+	def incrementPos(self):
+		"""if(self.A == 0):
+			self.x += 40
+			self.y += 10
+		elif(self.A == 1):
+			self.y += 40
+			self.x -= 10
+		elif(self.A == 2):
+			self.x -= 40
+			self.y -= 10
+		elif(self.A == 3):
+			self.y -= 40
+			self.x += 10
+			self.A = -1
+		self.A += 1"""
+		if(self.A == 0):
+			if(self.x < 10000):
+				self.A += 1
+			
+			self.x -= 150
+		
+		if(self.A == 1):
+			if(self.x > 80000):
+				self.A -= 1
+			
+			self.x += 150
+		
+		#self.x = -2500 self.y = -2500
