@@ -1,0 +1,10 @@
+{
+    "main": {
+        "app_function": "app.app", 
+        "aws_region": "eu-central-1", 
+        "profile_name": "default", 
+        "project_name": "lamdba-files", 
+        "runtime": "python2.7", 
+        "s3_bucket": "zappa-3mbdrbyab"
+    }
+}
