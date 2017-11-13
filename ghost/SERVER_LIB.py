@@ -50,6 +50,7 @@ class WebServer(object):
 		# Request a registration from the PACMAN service
 		print("Register")
 		reg = requests.post('http://pacman.autonomic-networks.ele.tue.nl/register', json={"name":GAME.name})
+		#reg = requests.post('http://127.0.0.1/register', json={"name":GAME.name})
 		
 		return GAME.loadRegistration(reg) #Save registration data in Object
 	

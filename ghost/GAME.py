@@ -60,10 +60,10 @@ if __name__ == "__main__":
 		print("Unable to reach Pozyx on\n")
 		print(e)
 		print("Starting without...")
-		raise SystemExit
+		#raise SystemExit
 	except:
 		print("Exception2")
-		raise SystemExit
+		#raise SystemExit
 	
 	#Serve all POST requests in a thread
 	_thread.start_new_thread(Web.run, ())

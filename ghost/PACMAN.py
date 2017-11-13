@@ -2,10 +2,24 @@ import json
 import sys, os
 import time
 import _thread
+import requests
+import time 
 
-from LCD import *
+try:
+	from LCD import *
+except:
+	def LCD_show(a):
+		pass
 
-from VIBRATOR import *
+try:
+	from VIBRATOR import *
+except:
+	class RPi_GPIO:
+		def output(a,b):
+			pass
+	
+	GPIO = RPi_GPIO()
+	
 
 from PACMAN_ALG import *
 
@@ -62,6 +76,8 @@ class PACMAN(object):
 		
 		self.x = 56300
 		self.y = 19300
+		self.goal_x = 5
+		self.goal_y = 1
 		self.A = 0
 		self.sendCounter = 0
 
@@ -348,8 +364,19 @@ class PACMAN(object):
 				self.prevloc['y'] = xyz['y']
 				self.x = xyz['x']
 				self.y = xyz['y']
+		_thread.start_new_thread(self.get_AlgDirection,())
+		time.sleep(10000)
 			#print("Magnetic angle: "+str(self.magnetic['A']))
 			#print("Pozyx location X:"+str(xyz['x'])+"\tY:"+str(xyz['y']))
+	
+	def get_AlgDirection(self):
+		print("Request")
+		data = {"own_pos":{"x":self.x,"y":self.y},"goal_pos":{"x":self.goal_x,"y":self.goal_y}};
+		print(data)
+		reg = requests.post('https://twla20w256.execute-api.eu-central-1.amazonaws.com/main/event/direction', json=data)
+		print("Done")
+		print(reg)
+		print(reg.text)
 	
 	def ledringClear(self):
 		for i in range(len(self.RingColor)):
@@ -521,6 +548,7 @@ class PACMAN(object):
 					#Re-enroll Game
 					self.Restart()
 		except KeyboardInterrupt:
+			print("Failed to run")
 			raise SystemExit
 	
 	def Restart(self):
