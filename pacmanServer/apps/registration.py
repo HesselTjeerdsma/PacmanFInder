@@ -16,8 +16,6 @@ class RegistrationAPI:
         self._loop = loop
         # Sprite inventory
         self._sprite_inventory = inventory
-        # Game info
-        self._game = game
         # Server settings
         self._host = host
         self._port = port

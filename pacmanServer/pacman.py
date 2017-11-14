@@ -49,7 +49,7 @@ if __name__ == "__main__":
     asyncio.ensure_future(scheduler.start())
 
     bound_handler = functools.partial(serve_websocket, game_object=game)
-    start_server = websockets.serve(bound_handler, '0.0.0.0', 60000)
+    start_server = websockets.serve(bound_handler, '0.0.0.0', 443)
 
     loop.run_until_complete(start_server)
 
