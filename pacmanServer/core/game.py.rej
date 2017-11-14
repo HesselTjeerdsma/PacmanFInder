@@ -1,0 +1,19 @@
+diff a/pacmanServer/core/game.py b/pacmanServer/core/game.py	(rejected hunks)
+@@ -38,14 +38,14 @@
+         self._cherry_spawn_handle = None  # Asyncio handle to stop spawning events
+ 
+         # Create background
+-        #self._background = pygame.Surface(self._screen.get_size())  # Create Surface
+-        #self._background.fill(COLOR_BLACK)  # Fill with color
++        self._background = pygame.Surface(self._screen.get_size())  # Create Surface
++        self._background.fill(COLOR_BLACK)  # Fill with color
+ 
+         # Sprite inventory
+         self._sprite_inventory = inventory
+ 
+         # Display the background; needed to not have a pacman trail
+-        #self._sprite_inventory.all.clear(self._screen, self._background)
++        self._sprite_inventory.all.clear(self._screen, self._background)
+ 
+         # Init walls/food
+         self._init_sprites()
