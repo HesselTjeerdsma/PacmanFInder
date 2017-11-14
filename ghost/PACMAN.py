@@ -76,8 +76,8 @@ class PACMAN(object):
 		
 		self.x = 56300
 		self.y = 19300
-		self.goal_x = 5
-		self.goal_y = 1
+		self.goal_x = 50000
+		self.goal_y = 19300
 		self.A = 0
 		self.sendCounter = 0
 
@@ -373,7 +373,7 @@ class PACMAN(object):
 		print("Request")
 		data = {"own_pos":{"x":self.x,"y":self.y},"goal_pos":{"x":self.goal_x,"y":self.goal_y}};
 		print(data)
-		reg = requests.post('https://twla20w256.execute-api.eu-central-1.amazonaws.com/main/event/direction', json=data)
+		reg = requests.post('https://om2t8ceaw3.execute-api.eu-central-1.amazonaws.com/dev/event/direction', json=data)
 		print("Done")
 		print(reg)
 		print(reg.text)
