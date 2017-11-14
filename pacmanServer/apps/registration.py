@@ -16,17 +16,26 @@ class RegistrationAPI:
         self._loop = loop
         # Sprite inventory
         self._sprite_inventory = inventory
+        # Game info
+        self._game = game
         # Server settings
         self._host = host
         self._port = port
         # Setup server and routes
         self._app = web.Application(loop=self._loop)
         self._app.router.add_post('/register', self._handle_registration)
+        self._app.router.add_get('/map', self._handle_map)
 
     async def start(self):
         """ Start aiohttp server """
         logger.debug("Server started")
         await self._loop.create_server(self._app.make_handler(), self._host, self._port)
+
+    async def _handle_map(self,request):
+        file = open("/root/pacman/map.html", "r") 
+        ret = web.Response(text=file.read(),status=200,content_type='text/html')
+        file.close()
+        return ret
 
     async def _handle_registration(self, request):
         """ Handle registration requests """
