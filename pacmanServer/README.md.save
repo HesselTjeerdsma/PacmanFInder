@@ -1,0 +1,12 @@
+https://apollo.ele.tue.nl/fputter/pacman/wiki# Pacman
+
+To run the game:
+```python pacman.py```
+
+To get a sample player:
+```examples/sample_player.py```
+
+Or for debug purpose there's a default player, controllable with the arrow keys
+
+
+Read more on the [wiki](https://apollo.ele.tue.nl/fputter/pacman/wiki)!
