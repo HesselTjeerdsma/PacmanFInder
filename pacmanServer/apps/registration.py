@@ -71,8 +71,8 @@ class RegistrationAPI:
             player = Player(-50, -50, COLOR_GREEN, p_type='pacman', ip=host, name=payload['name'])
             self._sprite_inventory.pacmans.add(player)
         else:
-	   player = Player(-50, -50, COLOR_RED, p-type='ghost', ip=host, name=payload['name'])
-	   self._sprite_inventory.ghosts.add(player)
+            player = Player(-50, -50, COLOR_RED, p_type='ghost', ip=host, name=payload['name'])
+            self._sprite_inventory.ghosts.add(player)
  
         self._sprite_inventory.players.add(player)
         self._sprite_inventory.all.add(player)
