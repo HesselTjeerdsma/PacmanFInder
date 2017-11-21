@@ -180,6 +180,6 @@ def locationRequest_handler():
     return jsonify(direction(np.array(Own_Position) - np.array(path[-1])))
 
 if __name__ == '__main__':
-    app.run(host='localhost', debug=True)
+    app.run(host='0.0.0.0', debug=True)
 
 
