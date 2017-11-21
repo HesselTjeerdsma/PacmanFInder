@@ -6,7 +6,7 @@ logger = logging.getLogger(__name__)
 
 
 class Player(pygame.sprite.DirtySprite):
-    def __init__(self, x, y, color, p_type: str, ip: str=None, name: str=''):
+    def __init__(self, x, y, color, p_type: str, ip: str=None, name: str='', rname: str=''):
         super().__init__()
         self.image = pygame.Surface([16, 16])
         self.image.fill(COLOR_WHITE)
@@ -19,6 +19,7 @@ class Player(pygame.sprite.DirtySprite):
         # Player attributes
         self._ip = ip
         self._name = name
+        self._rname = rname
         self._type = p_type
         self.score = 0
         self.lives = 3

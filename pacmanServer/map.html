@@ -6,61 +6,7 @@
 	</head>
 	<body>
 		<div style="width:1600px;margin:auto">
-			<svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="1600px" height="540px" style="background: #000000">
-				<!-- Walls of the building -->
-				<rect x="0" y="0" width="1600" height="8" fill="#0000FF" />
-				<rect x="0" y="0" width="8" height="540" fill="#0000FF" />
-				<rect x="0" y="532" width="1600" height="8" fill="#0000FF" />
-				<rect x="1592" y="0" width="8" height="540" fill="#0000FF" />
-				<!-- Top room walls -->
-				<rect x="0" y="125" width="1600" height="1" fill="#0000FF" />
-				<!-- Bottom room walls -->
-				<rect x="0" y="415" width="1600" height="1" fill="#0000FF" />
-
-				<!-- Right square walls -->
-				<rect x="1285" y="170" width="67" height="3" fill="#0000FF" />
-				<rect x="1372" y="170" width="82" height="3" fill="#0000FF" />
-
-				<rect x="1285" y="170" width="11" height="199" fill="#0000FF" />
-
-				<rect x="1285" y="366" width="67" height="3" fill="#0000FF" />
-				<rect x="1372" y="366" width="82" height="3" fill="#0000FF" />
-
-				<rect x="1454" y="170" width="19" height="199" fill="#0000FF" />
-
-				<!-- Right glass walls -->
-				<rect x="1473" y="170" width="81" height="1" fill="#0000FF" />
-				<rect x="1554" y="170" width="1" height="199" fill="#0000FF" />
-				<rect x="1473" y="368" width="81" height="1" fill="#0000FF" />
-
-				<!-- Elevator parts-->
-				<rect x="974" y="197" width="69" height="157" fill="#0000FF" />
-				<rect x="1114" y="197" width="145" height="63" fill="#0000FF" />
-				<rect x="1114" y="290" width="145" height="64" fill="#0000FF" />
-
-				<!-- Center glass walls -->
-				<rect x="610" y="199" width="328" height="1" fill="#0000FF" />
-				<rect x="937" y="199" width="1" height="141" fill="#0000FF" />
-				<rect x="610" y="340" width="328" height="1" fill="#0000FF" />
-				<rect x="610" y="199" width="1" height="141" fill="#0000FF" />
-
-
-				<!-- FOOD -->
-				<rect x="1500" y="150" width="15" height="15" fill="#FF69b4" />
-				<rect x="1450" y="150" width="10" height="10" fill="#FFFFFF" />
-				<rect x="1400" y="150" width="10" height="10" fill="#FFFFFF" />
-				<rect x="1350" y="150" width="10" height="10" fill="#FFFFFF" />
-
-				<rect x="1075" y="200" width="10" height="10" fill="#FFFFFF" />
-				<rect x="1075" y="250" width="10" height="10" fill="#FFFFFF" />
-				<rect x="1075" y="300" width="10" height="10" fill="#FFFFFF" />
-				<rect x="1075" y="350" width="10" height="10" fill="#FFFFFF" />
-
-				<rect x="1500" y="385" width="10" height="10" fill="#FFFFFF" />
-				<rect x="1450" y="385" width="10" height="10" fill="#FFFFFF" />
-				<rect x="1400" y="385" width="10" height="10" fill="#FFFFFF" />
-				<rect x="1350" y="385" width="10" height="10" fill="#FFFFFF" />
-			</svg>
+			<!-- MAP SVG -->
 		</div>
 		<script>
 		
@@ -87,14 +33,7 @@
 
 				ws.onmessage = function (evt){
 				  var received_msg = evt.data;
-				  //var data = new Uint8Array(received_msg);
-				  //console.log("Package length: "+data.length);
-				  data = received_msg.split("\t");
-				  $.each(data,function(index){
-					  //console.log(data[index]);
-					  data_s = data[index].split("|")
-					  parseData(data_s[0],data_s[1]);
-				  });
+				  parseData(evt.data);
 				};
 
 				ws.onclose = function(event){
@@ -116,42 +55,57 @@
 
 			}
 			
-			function parseData(event,data){
+			function parseData(data){
 				if(data == null){
 					return
 				}
 				try{
 				  json_data = JSON.parse(data);
 				  
-				  if(event == "Location"){
-					  $('#Player').attr("x",1600-(json_data['x']/50));
-					  $('#Player').attr("y",(json_data['y']/50));
-				  }else if(event == "RegistrationData"){
+				  if(json_data['Food'] != undefined){
 					  $.each($('svg .food'),function(element){
 						  element.remove();
 					  });
 					  
-					  $.each(json_data['food_locations'],function(index,element){
-						  box = CreateSvgElement("rect",{"x":1600-(element['x']/50),"y":(element['y']/50),"width":"10px","height":"10px","fill":"#00aa00","class":"food"});
+					  $.each(json_data['Food'],function(index,element){
+						  box = CreateSvgElement("rect",{"x":(element['x']),"y":(element['y']),"width":"10px","height":"10px","fill":"#00aa00","class":"food"});
 						  $('svg').append(box);
 					  });
-					  
+				  }
+
+				  if(json_data['Energizer'] != undefined){
 					  $.each($('svg .energizer'),function(element){
 						  element.remove();
 					  });
 					  
-					  $.each(json_data['energizer_locations'],function(index,element){
-						  box = CreateSvgElement("rect",{"x":1600-(element['x']/50),"y":(element['y']/50),"width":"10px","height":"10px","fill":"#00FF00","class":"energizer"});
+					  $.each(json_data['Energizer'],function(index,element){
+						  box = CreateSvgElement("rect",{"x":(element['x']),"y":(element['y']),"width":"10px","height":"10px","fill":"#00FF00","class":"energizer"});
 						  $('svg').append(box);
 					  });
-				  }else if(event == "PlayerData"){
-					  $.each(json_data,function(index,element){
+				  }
+
+				  if(json_data['Cherry'] != undefined){
+					  $.each($('svg .cherry'),function(element){
+						  element.remove();
+					  });
+					  
+					  $.each(json_data['Cherry'],function(index,element){
+						  console.log("+Cherry");
+						  console.log(json_data);
+						  box = CreateSvgElement("rect",{"x":(element['x']),"y":(element['y']),"width":"10px","height":"10px","fill":"#FF44FF","class":"cherry"});
+						  $('svg').append(box);
+						  cherry_despawn(element['x'],element['y'],json_data['lifetime'])
+					  });
+				  }
+
+				  if(json_data['Player'] != undefined){
+					  $.each(json_data['Player'],function(index,element){
 						  if($('svg #'+index).length == 0){
-							  box = CreateSvgElement("rect",{"x":1600-(element['x']/50),"y":(element['y']/50),"width":"10px","height":"10px","fill":"#FFFFFF","id":index});
+							  box = CreateSvgElement("rect",{"x":(element['x']),"y":(element['y']),"width":"10px","height":"10px","fill":"#FFFFFF","id":index});
 							  $('svg').append(box);
 						  }else{
-							  $('svg #'+index).attr("x",1600-(element['x']/50));
-							  $('svg #'+index).attr("y",(element['y']/50));
+							  $('svg #'+index).attr("x",(element['x']));
+							  $('svg #'+index).attr("y",(element['y']));
 							  if(element['type'] == "Unknown"){
 								  $('svg #'+index).attr("fill","#FFFFFF");
 							  }else if(element['type'] == "pacman"){
@@ -167,18 +121,6 @@
 							  }
 						  }
 					  });
-				  }else if(event == "Food"){
-					  $('svg .food[x='+(1600-(json_data['x']/50))+'][y='+((json_data['y']/50))+']')[0].remove();
-				  }else if(event == "Energizer"){
-					  $('svg .energizer[x='+(1600-(json_data['x']/50))+'][y='+((json_data['y']/50))+']')[0].remove();
-				  }else if(event == "CherrySpawned"){
-					  console.log("+Cherry");
-					  console.log(json_data);
-					  box = CreateSvgElement("rect",{"x":1600-(json_data['location']['x']/50),"y":(json_data['location']['y']/50),"width":"10px","height":"10px","fill":"#FF44FF","class":"cherry"});
-					  $('svg').append(box);
-					  cherry_despawn(json_data['location']['x'],json_data['location']['y'],json_data['lifetime'])
-				  }else if(event == "Cherry"){
-					  $('svg .cherry[x='+(1600-(json_data['x']/50))+'][y='+((json_data['y']/50))+']')[0].remove();
 				  }
 			  }
 			  catch(e){

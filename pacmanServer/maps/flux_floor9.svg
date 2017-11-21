@@ -61,32 +61,32 @@
     <rect x="0" y="125" width="36" height="290" fill="#0000FF" />
 
 	<!-- ENERGIZER -->
-    <rect x="50" y="142" width="15" height="15" fill="#FF69b4" />
-    <rect x="50" y="385" width="15" height="15" fill="#FF69b4" />
-	<rect x="1550" y="142" width="15" height="15" fill="#FF69b4" />
-    <rect x="1550" y="385" width="15" height="15" fill="#FF69b4" />
+    <rect class="energizer" x="50" y="142" width="15" height="15" fill="#FF69b4" />
+    <rect class="energizer" x="50" y="385" width="15" height="15" fill="#FF69b4" />
+	<rect class="energizer" x="1550" y="142" width="15" height="15" fill="#FF69b4" />
+    <rect class="energizer" x="1550" y="385" width="15" height="15" fill="#FF69b4" />
 
 	<!-- FOOD -->
-    <rect x="100" y="145" width="10" height="10" fill="#FFFFFF" />
-    <rect x="150" y="145" width="10" height="10" fill="#FFFFFF" />
-    <rect x="200" y="145" width="10" height="10" fill="#FFFFFF" />
-    <rect x="250" y="145" width="10" height="10" fill="#FFFFFF" />
-    <rect x="300" y="145" width="10" height="10" fill="#FFFFFF" />
-    <rect x="350" y="145" width="10" height="10" fill="#FFFFFF" />
-    <rect x="400" y="145" width="10" height="10" fill="#FFFFFF" />
-    <rect x="450" y="145" width="10" height="10" fill="#FFFFFF" />
-    <rect x="500" y="145" width="10" height="10" fill="#FFFFFF" />
-    <rect x="550" y="145" width="10" height="10" fill="#FFFFFF" />
-    <rect x="600" y="145" width="10" height="10" fill="#FFFFFF" />
-    <rect x="650" y="145" width="10" height="10" fill="#FFFFFF" />
-    <rect x="700" y="145" width="10" height="10" fill="#FFFFFF" />
-    <rect x="750" y="145" width="10" height="10" fill="#FFFFFF" />
-    <rect x="800" y="145" width="10" height="10" fill="#FFFFFF" />
-    <rect x="850" y="145" width="10" height="10" fill="#FFFFFF" />
-    <rect x="900" y="145" width="10" height="10" fill="#FFFFFF" />
-    <rect x="950" y="145" width="10" height="10" fill="#FFFFFF" />
-    <rect x="1000" y="145" width="10" height="10" fill="#FFFFFF" />
-    <rect x="1050" y="145" width="10" height="10" fill="#FFFFFF" />
+    <rect class="food" x="100" y="145" width="10" height="10" fill="#FFFFFF" />
+    <rect class="food" x="150" y="145" width="10" height="10" fill="#FFFFFF" />
+    <rect class="food" x="200" y="145" width="10" height="10" fill="#FFFFFF" />
+    <rect class="food" x="250" y="145" width="10" height="10" fill="#FFFFFF" />
+    <rect class="food" x="300" y="145" width="10" height="10" fill="#FFFFFF" />
+    <rect class="food" x="350" y="145" width="10" height="10" fill="#FFFFFF" />
+    <rect class="food" x="400" y="145" width="10" height="10" fill="#FFFFFF" />
+    <rect class="food" x="450" y="145" width="10" height="10" fill="#FFFFFF" />
+    <rect class="food" x="500" y="145" width="10" height="10" fill="#FFFFFF" />
+    <rect class="food" x="550" y="145" width="10" height="10" fill="#FFFFFF" />
+    <rect class="food" x="600" y="145" width="10" height="10" fill="#FFFFFF" />
+    <rect class="food" x="650" y="145" width="10" height="10" fill="#FFFFFF" />
+    <rect class="food" x="700" y="145" width="10" height="10" fill="#FFFFFF" />
+    <rect class="food" x="750" y="145" width="10" height="10" fill="#FFFFFF" />
+    <rect class="food" x="800" y="145" width="10" height="10" fill="#FFFFFF" />
+    <rect class="food" x="850" y="145" width="10" height="10" fill="#FFFFFF" />
+    <rect class="food" x="900" y="145" width="10" height="10" fill="#FFFFFF" />
+    <rect class="food" x="950" y="145" width="10" height="10" fill="#FFFFFF" />
+    <rect class="food" x="1000" y="145" width="10" height="10" fill="#FFFFFF" />
+    <rect class="food" x="1050" y="145" width="10" height="10" fill="#FFFFFF" />
     <rect x="1100" y="145" width="10" height="10" fill="#FFFFFF" />
     <rect x="1150" y="145" width="10" height="10" fill="#FFFFFF" />
     <rect x="1200" y="145" width="10" height="10" fill="#FFFFFF" />

@@ -54,5 +54,5 @@ CHERRY_AVG_GRACE = 25
 
 # Pixel:meter ratio
 PM_RATIO = 0.05  # 1600px:80m
-JUMP_LIMIT = 1*1000  # Millimeters; 1 meter limit
+JUMP_LIMIT = 2*1000  # Millimeters; 1 meter limit
 

@@ -30,10 +30,17 @@ class RegistrationAPI:
         await self._loop.create_server(self._app.make_handler(), self._host, self._port)
 
     async def _handle_map(self,request):
-        file = open("/root/pacman/map.html", "r") 
+        page = open("/root/pacman/map.html", "r") 
+        _map = open("/root/pacman/map.svg", "r")
+
+        page_txt = page.read()
+
+        page_txt = page_txt.replace('<!-- MAP SVG -->',_map.read())
+
         logger.warning('Handle Map')
-        ret = web.Response(text=file.read(),status=200,content_type='text/html')
-        file.close()
+        ret = web.Response(text=page_txt,status=200,content_type='text/html')
+        page.close()
+        _map.close()
         return ret
 
     async def _handle_registration(self, request):
@@ -76,10 +83,10 @@ class RegistrationAPI:
         #    self._sprite_inventory.ghosts.add(player)
 
         if payload['name'].find("pacman"):
-            player = Player(-50, -50, COLOR_GREEN, p_type='pacman', ip=host, name=payload['name'])
+            player = Player(-50, -50, COLOR_GREEN, p_type='pacman', ip=host, name=payload['name'], rname = "")
             self._sprite_inventory.pacmans.add(player)
         else:
-            player = Player(-50, -50, COLOR_RED, p_type='ghost', ip=host, name=payload['name'])
+            player = Player(-50, -50, COLOR_RED, p_type='ghost', ip=host, name=payload['name'], rname = "")
             self._sprite_inventory.ghosts.add(player)
  
         self._sprite_inventory.players.add(player)
