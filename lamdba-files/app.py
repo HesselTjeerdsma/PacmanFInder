@@ -5,8 +5,6 @@ from flask import Flask, jsonify, abort, request, make_response, url_for
 import time
 import numpy
 import numpy as np
-import scipy.io
-import scipy.io as sio
 from heapq import *
 from threading import Timer
 from random import randint
