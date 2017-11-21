@@ -6,6 +6,9 @@ import functools
 import json
 
 async def serve_websocket(websocket, path,game_object):
+    prev_food = []
+    prev_energizer = []
+    prev_cherry = []
     while True:
         now = datetime.datetime.utcnow().isoformat() + 'Z'
 
@@ -22,12 +25,19 @@ async def serve_websocket(websocket, path,game_object):
                 'y': opponent.rect.centery
             }
 
-        payload = {
-            "Food":food_locations,
-            "Energizer":energizer_locations,
-            "Cherry":cherry_locations,
-            "Players": player_data
-        }
+        payload = {}
+        if(prev_food != food_locations):
+             payload['Food'] = food_locations
+             prev_food = food_locations
+        if(prev_cherry != cherry_locations):
+            payload['Cherry'] = cherry_locations
+            prev_cherry = cherry_locations
+        if(prev_energizer != energizer_locations):
+            payload['Energizer'] = energizer_locations
+            prev_energizer = energizer_locations
+        payload['Players'] = player_data
 
         await websocket.send(json.dumps(payload))
         await asyncio.sleep(0.5)
+
+

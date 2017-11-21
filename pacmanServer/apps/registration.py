@@ -22,7 +22,7 @@ class RegistrationAPI:
         # Setup server and routes
         self._app = web.Application(loop=self._loop)
         self._app.router.add_post('/register', self._handle_registration)
-        self._app.router.add_get('/map', self._handle_map)
+        self._app.router.add_get('/pacman_map', self._handle_map)
 
     async def start(self):
         """ Start aiohttp server """
@@ -31,6 +31,7 @@ class RegistrationAPI:
 
     async def _handle_map(self,request):
         file = open("/root/pacman/map.html", "r") 
+        logger.warning('Handle Map')
         ret = web.Response(text=file.read(),status=200,content_type='text/html')
         file.close()
         return ret
