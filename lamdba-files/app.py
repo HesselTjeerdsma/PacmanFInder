@@ -13,7 +13,6 @@ numpy.set_printoptions(threshold=numpy.nan)
 app = Flask(__name__)
 Own_Position = np.array([12,1])
 Goal_Position = np.array([0,0])
-Others_positions.append([36,144])
 setupDone = False
 path = []
 
