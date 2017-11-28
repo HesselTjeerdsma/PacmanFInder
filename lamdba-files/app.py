@@ -18,12 +18,12 @@ path = []
 array_x = 98
 array_y = 45
 
-@app.before_first_request()
+
 def create_array():
     global nmap
     nmap = numpy.ones(array_x, array_y)
     nmap[1:-1,1:-1] = 0
-
+@app.before_first_request(create_array())
 
 @app.errorhandler(400)
 def not_found(error):
