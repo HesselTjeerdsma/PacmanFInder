@@ -113,7 +113,6 @@ def astar(array, start, goal):
 
     return False
 
-nmap_tmp = nmap
     
 @app.route('/event/register', methods = ['POST'])
 def setup_handler():
