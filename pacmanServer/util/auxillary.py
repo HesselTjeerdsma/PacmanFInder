@@ -8,7 +8,7 @@ def async_current_milli_time():
 
 def x_mm_to_px(mm):
     # TODO: find dynamic way to get screen size from map here
-    return 1600-_mm_to_px(mm)
+    return 2236-_mm_to_px(mm)
 
 
 def y_mm_to_px(mm):
@@ -17,7 +17,7 @@ def y_mm_to_px(mm):
 
 def x_px_to_mm(px):
     # TODO: find dynamic way to get screen size from map here
-    return _px_to_mm(1600-px)
+    return _px_to_mm(2236-px)
 
 
 def y_px_to_mm(px):

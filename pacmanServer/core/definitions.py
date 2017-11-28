@@ -25,7 +25,10 @@ WINDOW_CAPTION = 'Pacman'
 
 # Map properties
 MAP_DIR = 'maps'
-MAP = 'flux_floor9.svg'
+MAP = 'audi_empty.svg'
+WEB_MAP = 'audi.svg'
+
+WEB_File = 'map.html'
 
 # Proxy IP
 ALLOWED_PROXIES = ['192.168.100.12']  # TODO: set it as input parameter from __main__
@@ -53,6 +56,6 @@ CHERRY_AVG_LIFETIME = 10
 CHERRY_AVG_GRACE = 25
 
 # Pixel:meter ratio
-PM_RATIO = 0.05  # 1600px:80m
+PM_RATIO = 0.020247  # 1600px:80m
 JUMP_LIMIT = 2*1000  # Millimeters; 1 meter limit
 

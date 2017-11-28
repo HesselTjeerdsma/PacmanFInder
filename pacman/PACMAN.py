@@ -69,6 +69,7 @@ class PACMAN(object):
 			time.sleep(1)
 			self.Restart()
 			
+		self.name = data['name']
 		
 		self.type = data['type']
 		

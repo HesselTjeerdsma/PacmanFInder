@@ -22,7 +22,7 @@ if __name__ == "__main__":
 	#Try to get serial com port
 	try:
 		serial_port = get_serial_ports()[0].device
-		serial_port = "/dev/ttyACM0"
+		#serial_port = "/dev/ttyACM0"
 		remote_id = None
 	except:
 		print("No com port")
@@ -30,7 +30,6 @@ if __name__ == "__main__":
 		pass
 	
 	# Anchor data (necessary data for calibration)
-	"""
 	anchors = [DeviceCoordinates(0x6847, 1, Coordinates(2, 2050, 2499)),
 				DeviceCoordinates(0x6877, 1, Coordinates(2819, 22828, 2595)),
 				DeviceCoordinates(0x6170, 1, Coordinates(13745, 2, 2621)),
@@ -45,6 +44,7 @@ if __name__ == "__main__":
 				DeviceCoordinates(0x6877, 1, Coordinates(2619, 20828, 2595)),
 				DeviceCoordinates(0x6170, 1, Coordinates(11745, 0, 2621)),
 				DeviceCoordinates(0x6169, 1, Coordinates(17923, 25836, 2655))]
+	"""
 	
 	algorithm = POZYX_POS_ALG_TRACKING	# positioning algorithm to use
 	dimension = POZYX_3D				# positioning dimension

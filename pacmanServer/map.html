@@ -4,12 +4,22 @@
 		<title>Pacman Map</title>
 		<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 	</head>
-	<body>
+	<body style="background:black">
 		<div style="width:1600px;margin:auto">
 			<!-- MAP SVG -->
 		</div>
+		<div style="width:600px;margin:auto;padding:15px;border-radius:10px;background:grey">
+			<table style="width:100%">
+			</table>
+		</div>
 		<script>
-		
+			function changeName(evt){
+				console.log(evt);
+				rname = $('input',$(evt).parent().parent()).val();
+				name = $('.name',$(evt).parent().parent()).html();
+				ws.send('{"name":"'+name+'","rname":"'+rname+'"}');
+			}
+
 			function CreateSvgElement(type,list,content = ""){
 				var box = document.createElementNS("http://www.w3.org/2000/svg",type);
 				$.each(list,function(index,element){
@@ -54,86 +64,102 @@
 				};
 
 			}
+
+			player_cache = {};
 			
 			function parseData(data){
 				if(data == null){
 					return
 				}
 				try{
-				  json_data = JSON.parse(data);
-				  
-				  if(json_data['Food'] != undefined){
-					  $.each($('svg .food'),function(element){
-						  element.remove();
-					  });
-					  
-					  $.each(json_data['Food'],function(index,element){
-						  box = CreateSvgElement("rect",{"x":(element['x']),"y":(element['y']),"width":"10px","height":"10px","fill":"#00aa00","class":"food"});
-						  $('svg').append(box);
-					  });
-				  }
+					json_data = JSON.parse(data);
 
-				  if(json_data['Energizer'] != undefined){
-					  $.each($('svg .energizer'),function(element){
-						  element.remove();
-					  });
-					  
-					  $.each(json_data['Energizer'],function(index,element){
-						  box = CreateSvgElement("rect",{"x":(element['x']),"y":(element['y']),"width":"10px","height":"10px","fill":"#00FF00","class":"energizer"});
-						  $('svg').append(box);
-					  });
-				  }
+					if(json_data['Food'] != undefined){
+						$.each($('svg .food'),function(index,element){
+							element.remove();
+						});
 
-				  if(json_data['Cherry'] != undefined){
-					  $.each($('svg .cherry'),function(element){
-						  element.remove();
-					  });
-					  
-					  $.each(json_data['Cherry'],function(index,element){
-						  console.log("+Cherry");
-						  console.log(json_data);
-						  box = CreateSvgElement("rect",{"x":(element['x']),"y":(element['y']),"width":"10px","height":"10px","fill":"#FF44FF","class":"cherry"});
-						  $('svg').append(box);
-						  cherry_despawn(element['x'],element['y'],json_data['lifetime'])
-					  });
-				  }
+						$.each(json_data['Food'],function(index,element){
+							box = CreateSvgElement("rect",{"x":(element['x']),"y":(element['y']),"width":"10px","height":"10px","fill":"#00aa00","class":"food"});
+							$('svg > g').append(box);
+						});
+					}
 
-				  if(json_data['Player'] != undefined){
-					  $.each(json_data['Player'],function(index,element){
-						  if($('svg #'+index).length == 0){
-							  box = CreateSvgElement("rect",{"x":(element['x']),"y":(element['y']),"width":"10px","height":"10px","fill":"#FFFFFF","id":index});
-							  $('svg').append(box);
-						  }else{
-							  $('svg #'+index).attr("x",(element['x']));
-							  $('svg #'+index).attr("y",(element['y']));
-							  if(element['type'] == "Unknown"){
-								  $('svg #'+index).attr("fill","#FFFFFF");
-							  }else if(element['type'] == "pacman"){
-								  $('svg #'+index).attr("fill","#FFFF00");
-							  }else if(element['type'] == "pacman.quarantine"){
-								  $('svg #'+index).attr("fill","#FFFF77");
-							  }else if(element['type'] == "pacman.energized"){
-								  $('svg #'+index).attr("fill","#0000FF");
-							  }else if(element['type'] == "ghost"){
-								  $('svg #'+index).attr("fill","#FF0000");
-							  }else if(element['type'] == "ghost.quarantine"){
-								  $('svg #'+index).attr("fill","#FF7777");
+					if(json_data['Energizer'] != undefined){
+						$.each($('svg .energizer'),function(index,element){
+							element.remove();
+						});
+
+						$.each(json_data['Energizer'],function(index,element){
+							box = CreateSvgElement("rect",{"x":(element['x']),"y":(element['y']),"width":"15px","height":"15px","fill":"#00FF00","class":"energizer"});
+							$('svg > g').append(box);
+						});
+					}
+
+					if(json_data['Cherry'] != undefined){
+						$.each($('svg .cherry'),function(index,element){
+							element.remove();
+						});
+
+						$.each(json_data['Cherry'],function(index,element){
+							console.log("+Cherry");
+							console.log(json_data);
+							box = CreateSvgElement("rect",{"x":(element['x']),"y":(element['y']),"width":"20px","height":"20px","fill":"#FF44FF","class":"cherry"});
+							$('svg > g').append(box);
+						});
+					}
+
+					if(json_data['Players'] != undefined){
+						$.each(json_data['Players'],function(index,element){
+							  if($('table #'+index).length == 0){
+							  	text = '<tr id="'+index+'"><td class="name">'+index+'</td><td class="real"><input value="'+element['real_name']+'"/></td>'+
+									'<td class="type">Target</td><td><a href="#" onclick="changeName(this)">Apply changes</a></td></tr>'
+							  	$('table').append(text);
+
+								if (!(index in player_cache)){
+									player_cache[index] = {
+										"name": index,
+										"real_name": element['real_name']
+									}
+								}
+							  }else{
+							  	if ("real_name" in element) {
+							  		$('.real input','table #'+index).val(element['real_name'])
+							  		player_cache[index]['rname'] =  element['real_name'];
+							  		$('#BIERoT_Pi text').html(element['real_name'])
+							  		
+							  	}
 							  }
-						  }
-					  });
+
+							if($('svg #'+index).length == 0){box = [];
+								box = [];
+								if("type" in element && element['type'] =='pacman'){
+									box[0] = CreateSvgElement("rect",{"x":0,"y":0,"width":"10px","height":"10px","fill":"#FFFF00"});
+								}else{
+									box[0] = CreateSvgElement("circle",{"cx":0,"cy":0,"r":"5","fill":"#00FFFF"});
+								}
+								if(player_cache[index]['real_name'] != ""){
+									box[1] = CreateSvgElement("text",{"x":0,"y":20},player_cache[index]['real_name']);
+								}else{
+									box[1] = CreateSvgElement("text",{"x":0,"y":20},player_cache[index]['name']);
+								}
+								group = CreateSvgElement('g',{"id":index,"fill":"white","transform":"translate("+(element['x'])+","+(element['y'])+")"});
+
+								$.each(box,function(index,value){
+									group.appendChild(value);
+								});
+								$('svg > g').append(group);
+							}else{
+								object = $('svg #'+index);
+								object.attr("transform","translate("+(element['x'])+","+(element['y'])+")");
+							}
+						});
 				  }
 			  }
 			  catch(e){
 				  console.log("Something throwed an Exception");
 				  console.log(e);
 			  }
-			}
-			
-			function cherry_despawn(x,y,time){
-				setTimeout(function(){
-					console.log("Remove Cherry");
-					$('svg .cherry[x='+(1600-(x/50))+'][y='+((y/50))+']')[0].remove();
-				},time*1000)
 			}
 		
 			function createY(x){
@@ -143,7 +169,7 @@
 						break;
 					}
 					box = CreateSvgElement("rect",{"x":1600-(x/50),"y":(y/50),"width":"10px","height":"10px","stroke":"grey","style":"fill-opacity:0"});
-					$('svg').append(box);
+					$('svg g').append(box);
 					y+= 500
 				}
 			}

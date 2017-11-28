@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2235 1252.58" width="2235px" height="1252px" style="background: #000000" transform="scale(0.7)">
+<title>MAP2_Artboard 1</title>
+
+<rect class="food" x="1000" y="800" width="10" height="10" fill="#FFFFFF" />
+<rect class="food" x="1000" y="900" width="10" height="10" fill="#FFFFFF" />
+<rect class="food" x="1235" y="800" width="10" height="10" fill="#FFFFFF" />
+<rect class="food" x="1235" y="900" width="10" height="10" fill="#FFFFFF" />
+<rect class="energizer" x="1117" y="850" width="15" height="15" fill="#FF69b4" />
+</svg>
