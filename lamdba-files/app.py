@@ -23,7 +23,7 @@ array_y = 45
 @app.before_first_request
 def create_array():
     global nmap
-    nmap = numpy.ones(array_x, array_y)
+    nmap = numpy.ones((array_x, array_y), dtype=np.int)
     nmap[1:-1,1:-1] = 0
 
 @app.errorhandler(400)
