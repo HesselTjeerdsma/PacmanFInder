@@ -139,7 +139,7 @@ nmap = np.array([
 
 @app.errorhandler(400)
 def not_found(error):
-    return make_response(jsonify( { 'error': 'Bad request' } ), 400)
+    return make_response(jsonify( { 'error': 'Bad request' } ), 40,)
 
 @app.errorhandler(404)
 def not_found(error):
