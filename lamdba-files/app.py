@@ -18,12 +18,13 @@ path = []
 array_x = 98
 array_y = 45
 
-@app.before_first_request()
+
+
+@app.before_first_request
 def create_array():
     global nmap
-    nmap = numpy.ones(array_x, array_y)
+    nmap = numpy.ones((array_x, array_y), dtype=np.int)
     nmap[1:-1,1:-1] = 0
-
 
 @app.errorhandler(400)
 def not_found(error):
@@ -112,7 +113,6 @@ def astar(array, start, goal):
 
     return False
 
-nmap_tmp = nmap
     
 @app.route('/event/register', methods = ['POST'])
 def setup_handler():
