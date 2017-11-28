@@ -3,6 +3,7 @@ from core.objects import Player
 from core.definitions import PG_RATIO, COLOR_GREEN, COLOR_RED, ALLOWED_PROXIES
 from util.auxillary import x_px_to_mm, y_px_to_mm
 from json import JSONDecodeError
+from core.definitions import *
 
 import logging
 logger = logging.getLogger(__name__)
@@ -30,8 +31,8 @@ class RegistrationAPI:
         await self._loop.create_server(self._app.make_handler(), self._host, self._port)
 
     async def _handle_map(self,request):
-        page = open("/root/pacman/map.html", "r") 
-        _map = open("/root/pacman/map.svg", "r")
+        page = open(PROJECT_DIR + '/' + WEB_File, "r") 
+        _map = open(PROJECT_DIR + '/' + MAP_DIR + '/' + WEB_MAP, "r")
 
         page_txt = page.read()
 
@@ -67,12 +68,17 @@ class RegistrationAPI:
 
         payload['name'] = payload['name'][:30]  # Cap player name to 30 chars
 
+        name_check = 0
+
         # Check whether ip and name already occurs
-        for player in self._sprite_inventory.players:
-            if player.ip == host:
-                return web.Response(text='A player is already registered on this IP', status=403)
-            elif player.name == payload['name']:  # TODO: enforce unique player names?
-                return web.Response(text='Player name already taken', status=403)
+        while name_check <= 0:
+            for player in self._sprite_inventory.players:
+                if player.ip == host:
+                    return web.Response(text='A player is already registered on this IP', status=403)
+                elif player.name == payload['name']:  # TODO: enforce unique player names?
+                    name_check -= 1
+                    payload['name'] += "_"
+            name_check += 1
 
         # Depending on ratio, player type: `pacman` or `ghost`
         # if len(self._sprite_inventory.ghosts) >= len(self._sprite_inventory.pacmans) * PG_RATIO:
@@ -82,7 +88,7 @@ class RegistrationAPI:
         #    player = Player(-50, -50, COLOR_RED, p_type='ghost', ip=host, name=payload['name'])
         #    self._sprite_inventory.ghosts.add(player)
 
-        if payload['name'].find("pacman"):
+        if payload['name'].find("pacman") >= 0:
             player = Player(-50, -50, COLOR_GREEN, p_type='pacman', ip=host, name=payload['name'], rname = "")
             self._sprite_inventory.pacmans.add(player)
         else:
@@ -100,6 +106,7 @@ class RegistrationAPI:
 
         # Respond with type and food/energizer locations
         return web.json_response(data={
+            'name': payload['name'],
             'type': player.p_type,
             'food_locations': food_locations,
             'energizer_locations': energizer_locations

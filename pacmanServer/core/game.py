@@ -25,10 +25,10 @@ class Game(Observable):
         self._map_parser = SVGMapParser(self._map)
 
         # Screen initialization
-        #self._screen_size = self._map_parser.get_dimensions()
-        #self._screen = pygame.display.set_mode(self._screen_size)  # Create screen
-        #pygame.display.set_caption(self._caption)  # Set caption of screen
-        # pygame.mouse.set_visible(False)  # Mouse visibility
+        self._screen_size = self._map_parser.get_dimensions()
+        self._screen = pygame.display.set_mode(self._screen_size)  # Create screen
+        pygame.display.set_caption(self._caption)  # Set caption of screen
+        pygame.mouse.set_visible(False)  # Mouse visibility
 
         # Some vars
         self._clock = AsyncClock(self._loop)  # The clock
@@ -38,14 +38,14 @@ class Game(Observable):
         self._cherry_spawn_handle = None  # Asyncio handle to stop spawning events
 
         # Create background
-        #self._background = pygame.Surface(self._screen.get_size())  # Create Surface
-        #self._background.fill(COLOR_BLACK)  # Fill with color
+        self._background = pygame.Surface(self._screen.get_size())  # Create Surface
+        self._background.fill(COLOR_BLACK)  # Fill with color
 
         # Sprite inventory
         self._sprite_inventory = inventory
 
         # Display the background; needed to not have a pacman trail
-        #self._sprite_inventory.all.clear(self._screen, self._background)
+        self._sprite_inventory.all.clear(self._screen, self._background)
 
         # Init walls/food
         self._init_sprites()
@@ -81,7 +81,7 @@ class Game(Observable):
                 self._sprite_inventory.all.add(energizer)
 
         # Start the cherry spawning process
-        self._loop.call_later(randint(90, 100)/10, self._spawn_cherry)
+        #self._loop.call_later(randint(90, 100)/10, self._spawn_cherry)
 
     def _restart(self):
         logger.debug("Restarting application")
@@ -458,8 +458,8 @@ class Game(Observable):
                 self._sprite_inventory.all.update(passed_time)
 
             # Redraw dirty sprites only
-            #rects = self._sprite_inventory.all.draw(self._screen)  # Get updated rectangles
-            #pygame.display.update(rects)  # Draw rectangles
+            rects = self._sprite_inventory.all.draw(self._screen)  # Get updated rectangles
+            pygame.display.update(rects)  # Draw rectangles
 
         # Close window and exit
         pygame.quit()
