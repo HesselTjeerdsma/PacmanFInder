@@ -47,7 +47,8 @@ class EventAPI(Observer):
                 if opponent is not player:
                     payload['player_locations'][opponent.name] = {
                         'x': x_px_to_mm(opponent.rect.centerx),
-                        'y': y_px_to_mm(opponent.rect.centery)
+                        'y': y_px_to_mm(opponent.rect.centery),
+                        'rname': opponent._rname
                     }
         elif event == 'location_error':
             payload = {

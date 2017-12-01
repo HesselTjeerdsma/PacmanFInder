@@ -15,11 +15,18 @@ try:
 	from VIBRATOR import *
 except:
 	class RPi_GPIO:
-		def output(a,b):
+		def output(self,a,b):
 			pass
+		def input(self,a):
+			return False
+		def setup(self,a,b):
+			pass
+		IN = 0
+		OUT = 0
 	
 	GPIO = RPi_GPIO()
 	
+SELECT_BUTTON = 17
 
 from PACMAN_ALG import *
 
@@ -83,8 +90,12 @@ class PACMAN(object):
 
 		LCD_show(self)
 
+		GPIO.setup(SELECT_BUTTON, GPIO.IN)
+
 		self.Message = ""
 		
+		self.Button_Counter = 0
+
 		self.prevloc = {"x":0,"y":0}
 		self.newLocation = False
 		
@@ -158,6 +169,7 @@ class PACMAN(object):
 				self.PlayerData[key]['dy'] = value['y'] - self.PlayerData[key]['y']
 				self.PlayerData[key]['x'] = value['x']
 				self.PlayerData[key]['y'] = value['y']
+				self.PlayerData[key]['Real_Name'] = value['rname']
 			
 			for key, value in self.PlayerData.items():
 				#All Players that arren't updated, are considerd that the Left the Game
@@ -366,18 +378,12 @@ class PACMAN(object):
 				self.x = xyz['x']
 				self.y = xyz['y']
 		_thread.start_new_thread(self.get_AlgDirection,())
-		time.sleep(10000)
 			#print("Magnetic angle: "+str(self.magnetic['A']))
 			#print("Pozyx location X:"+str(xyz['x'])+"\tY:"+str(xyz['y']))
 	
 	def get_AlgDirection(self):
-		print("Request")
 		data = {"own_pos":{"x":self.x,"y":self.y},"goal_pos":{"x":self.goal_x,"y":self.goal_y}};
-		print(data)
 		reg = requests.post('https://om2t8ceaw3.execute-api.eu-central-1.amazonaws.com/dev/event/direction', json=data)
-		print("Done")
-		print(reg)
-		print(reg.text)
 	
 	def ledringClear(self):
 		for i in range(len(self.RingColor)):
@@ -441,8 +447,17 @@ class PACMAN(object):
 				
 				if not (self.quarantine):
 					self.ledring()
+
+				if(GPIO.input(SELECT_BUTTON)):
+					if(self.Button_Counter == 0):
+						print("Button pressed")
+					self.Button_Counter += 1
+				elif(GPIO.input(SELECT_BUTTON) == False and self.Button_Counter > 0):
+					self.Button_Counter = 0
+
+
 				if(self.A == 0):
-					os.system('clear')
+					os.system('cls')
 					print("Game is running")
 					print("Your name:\t" + self.name)
 					print("Your type:\t"+self.type + ' ' + ('E' if (self.energized) else '') + ('Q' if (self.quarantine) else ''))
