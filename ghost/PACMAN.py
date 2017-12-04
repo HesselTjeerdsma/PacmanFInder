@@ -494,7 +494,7 @@ class PACMAN(object):
 					print(str(j)+" Messages received")
 
 					if(j == 0):
-						self.Register_Counter += 1
+						self.Register_Counter += 11
 					else:
 						self.Register_Counter = 0
 
