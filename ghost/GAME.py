@@ -30,6 +30,7 @@ if __name__ == "__main__":
 		pass
 	
 	# Anchor data (necessary data for calibration)
+	"""
 	anchors = [DeviceCoordinates(0x6847, 1, Coordinates(2, 2050, 2499)),
 				DeviceCoordinates(0x6877, 1, Coordinates(2819, 22828, 2595)),
 				DeviceCoordinates(0x6170, 1, Coordinates(13745, 2, 2621)),
@@ -39,15 +40,21 @@ if __name__ == "__main__":
 				DeviceCoordinates(0x6147, 1, Coordinates(35166, 2080, 2658)),
 				DeviceCoordinates(0x6823, 1, Coordinates(26342, 27810, 2628)),
 				DeviceCoordinates(0x614b, 1, Coordinates(34639, 25070, 2692))]
+	
+	anchors = [DeviceCoordinates(0x6871, 1, Coordinates(11260, 3070, 4110)),
+				DeviceCoordinates(0x6169, 1, Coordinates(11260, 11500, 4110)),
+				DeviceCoordinates(0x6844, 1, Coordinates(34364, 2723, 4110)),
+				DeviceCoordinates(0x6170, 1, Coordinates(34364, 10372, 4110))]
 	"""
-	anchors = [DeviceCoordinates(0x6847, 1, Coordinates(0, 50, 2499)),
-				DeviceCoordinates(0x6877, 1, Coordinates(2619, 20828, 2595)),
-				DeviceCoordinates(0x6170, 1, Coordinates(11745, 0, 2621)),
-				DeviceCoordinates(0x6169, 1, Coordinates(17923, 25836, 2655))]
-	"""
+	anchors = [DeviceCoordinates(0x617E, 1, Coordinates(11260, 2723, 4110)),
+				DeviceCoordinates(0x6169, 1, Coordinates(11260, 10172, 4110)),
+				DeviceCoordinates(0x6844, 1, Coordinates(34364, 3070, 4110)),
+				DeviceCoordinates(0x6170, 1, Coordinates(34364, 11300, 4110))]
+				#DeviceCoordinates(0x6847, 1, Coordinates(10629,3918,2939))]
+	
 	
 	algorithm = POZYX_POS_ALG_TRACKING	# positioning algorithm to use
-	dimension = POZYX_3D				# positioning dimension
+	dimension = POZYX_2_5D				# positioning dimension
 	height = 1000						# height of device, required in 2.5D positioning
 	
 	#Try connecting to the Pozyx

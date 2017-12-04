@@ -26,7 +26,8 @@ except:
 	
 	GPIO = RPi_GPIO()
 	
-SELECT_BUTTON = 17
+SELECT_BUTTON = 23
+POWER_BUTTON = 24
 
 from PACMAN_ALG import *
 
@@ -59,6 +60,8 @@ GAMEWON_TEXT = "  _____                         _      __           \n / ___/ __
 GAMELOST_TEXT = "  _____                          __             __ \n / ___/ ___ _  __ _  ___        / /  ___   ___ / /_\n/ (_ / / _ `/ /  ' \\/ -_)      / /__/ _ \\ (_-</ __/\n\\___/  \\_,_/ /_/_/_/\\__/      /____/\\___//___/\\__/ \n                                                   "
 class PACMAN(object):
 	def __init__(self):
+		GPIO.setup(POWER_BUTTON,GPIO.OUT)
+		GPIO.output(POWER_BUTTON,GPIO.HIGH)
 		self.Web = web = None
 		self.last_POST = {"/event/location":0,"/event/cherry":0,"/event/energizer":0,"/event/food":0,"/event/collision":0,"/event/quarantine":0,"/event/cherry_spawned":0}
 		self.type = ""
@@ -87,6 +90,8 @@ class PACMAN(object):
 		self.goal_y = 19300
 		self.A = 0
 		self.sendCounter = 0
+
+		self.Register_Counter = 0
 
 		LCD_show(self)
 
@@ -126,7 +131,9 @@ class PACMAN(object):
 			print(response)
 			time.sleep(1)
 			self.Restart()
-			
+		
+		self.Register_Counter = 0
+
 		self.name = data['name']
 		
 		self.type = data['type']
@@ -370,13 +377,16 @@ class PACMAN(object):
 	
 	def get_position(self):
 		if self.use_pozyx is not False:
-			(xyz,self.magnetic) = self.pozyx.loop()
-			self.magnetic['A'] += 20
-			if(xyz['x'] != 0 and xyz['y'] != 0):
-				self.prevloc['x'] = xyz['x']
-				self.prevloc['y'] = xyz['y']
-				self.x = xyz['x']
-				self.y = xyz['y']
+			try:
+				(xyz,self.magnetic) = self.pozyx.loop()
+				self.magnetic['A'] += 20
+				if(xyz['x'] != 0 and xyz['y'] != 0):
+					self.prevloc['x'] = xyz['x']
+					self.prevloc['y'] = xyz['y']
+					self.x = xyz['x']
+					self.y = xyz['y']
+			except:
+				pass
 		_thread.start_new_thread(self.get_AlgDirection,())
 			#print("Magnetic angle: "+str(self.magnetic['A']))
 			#print("Pozyx location X:"+str(xyz['x'])+"\tY:"+str(xyz['y']))
@@ -466,7 +476,7 @@ class PACMAN(object):
 					print("Your pos.:\tX: "+str(self.x)+"\tY: "+str(self.y))
 					print(self.magnetic)
 					print()
-					
+
 					i = 0
 					j = 0
 					string = ""
@@ -482,6 +492,12 @@ class PACMAN(object):
 						else:
 							string += "\t\t"
 					print(str(j)+" Messages received")
+
+					if(j == 0):
+						self.Register_Counter += 1
+					else:
+						self.Register_Counter = 0
+
 					print(string)
 					self.last_POST = {"/event/location":0,"/event/cherry":0,"/event/energizer":0,"/event/food":0,"/event/collision":0,"/event/quarantine":0,"/event/cherry_spawned":0}
 					
@@ -559,7 +575,7 @@ class PACMAN(object):
 					print(self.Message)
 					self.Message = ""
 				
-				if(self.game_done):
+				if(self.game_done or self.Register_Counter == 10):
 					time.sleep(10)
 					#Re-enroll Game
 					self.Restart()
